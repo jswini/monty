@@ -7,7 +7,7 @@
  *
  * Return: (EXIT_FAILURE)
  */
-int usage_error(unsigned int line_number)
+int usage_error(void)
 {
 	fprintf(stderr, "USAGE: monty file\n");
 	exit(EXIT_FAILURE);
@@ -30,7 +30,7 @@ int unknown_op_error(char *opcode, unsigned int line_number)
  *
  * Return: (EXIT_FAILURE)
  */
-int malloc_error(unsigned int line_number)
+int malloc_error(void)
 {
 	fprintf(stderr, "Error: malloc failed\n");
 	exit(EXIT_FAILURE);
