@@ -6,20 +6,24 @@
  */
 int main(int argc, char **argv)
 {
-	int fd, j, line;
+	int fd;
+	int line;
+	unsigned int j;
 	char **array;
-	int (*op_result(unsigned int));
+	stack_t *stack;
+
+	int (*op_result)(stack_t, unsigned int);
 
 
 	if ((argv[1] == NULL) || (argc != 2))
 	{
-		usage_error(void);
+		usage_error();
 	}
 	else
 	{
-		fd = open(argv[1], O_PATH | O_RDONLY);
+		fd = open(argv[1], O_RDONLY);
 		if (fd == -1)
-			open_file_error(char *filename);
+			open_file_error(argv[1]);
 		array = tokenize(fd);
 	}
 	close(fd);
@@ -29,10 +33,11 @@ int main(int argc, char **argv)
 		if (j % 2 == 0)
 			line = ((j / 2) + 1);
 		data_n = atoi(array[j + 1]);
-		op_result = get_op_code(array[j], line);
+		op_result = get_op_code(array[j]);
+		printf("%s", op_result(stack, line));
 	}
 
-	return (0)
+	return (0);
 }
 
 /**
@@ -43,19 +48,19 @@ int main(int argc, char **argv)
 char **tokenize(int fd)
 {
 	char **array;
-	int i, count;
+	int i;
 	char *buffer;
 
 	buffer == malloc(sizeof(char) * 32);
 	if (buffer == NULL)
-		malloc_error(void);
+		malloc_error();
 	count = read(fd, buffer, 32);
 /*for debug only*/
 	write(STDOUT_FILENO, buffer, 32);
 /*end debug*/
 
 /*tokenize the array*/
-	array[0] = strtok(count, " \n");
+	array[0] = strtok(buffer, " \n");
 
 	for (i = 1; array[i] != NULL; i++)
 	{
@@ -64,7 +69,7 @@ char **tokenize(int fd)
 /*prints array for debug*/
 	for (i = 0; array[i] != NULL; i++)
 	{
-		printf("%s\n", array);
+		printf("%s\n", array[i]);
 	}
 
 	free(buffer);
@@ -77,7 +82,7 @@ char **tokenize(int fd)
  *
  *
  */
-int (*get_op_code(char *s))(stack_t, unsigned int)
+int (*get_op_code(char *s))(stack_t stack, unsigned int line)
 {
 	instruction_t op_code[] = {
 		{"push", push},
@@ -86,7 +91,7 @@ int (*get_op_code(char *s))(stack_t, unsigned int)
 		{"pop", pop},
 		{"swap", swap},
 		{"add", add},
-		{"nop", nop}
+		{"nop", nop},
 		{NULL, NULL}
 	};
 	int i = 0;

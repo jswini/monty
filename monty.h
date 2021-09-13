@@ -40,6 +40,8 @@ typedef struct instruction_s
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
 
 /*our functions*/
 void push(stack_t **stack, unsigned int line_number);
@@ -50,11 +52,12 @@ void swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 int (*get_op_code(char *s))(stack_t, unsigned int);
-int usage_error(unsigned int line_number);
+int usage_error(void);
 int unknown_op_error(char *opcode, unsigned int line_number);
-int malloc_error(unsigned int line_numberr);
+int malloc_error(void);
 int open_file_error(char *filename);
 int no_int_error(unsigned int line_number);
+char **tokenize(int fd);
 
 /*EXTERNAL VARIABLES*/
 extern int data_n;
