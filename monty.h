@@ -37,18 +37,25 @@ typedef struct instruction_s
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /*our functions*/
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
-void  pop(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
-void  add(stack_t **stack, unsigned int line_number);
-void  nop(stack_t **stack, unsigned int line_number);
-
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
+int (*get_op_code(char *s))(stack_t, unsigned int);
+int usage_error(unsigned int line_number);
+int unknown_op_error(char *opcode, unsigned int line_number);
+int malloc_error(unsigned int line_numberr);
+int open_file_error(char *filename);
+int no_int_error(unsigned int line_number);
 
 /*EXTERNAL VARIABLES*/
-
-
+extern int data_n;
 #endif /* MONTY_H*/
