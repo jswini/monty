@@ -1,20 +1,16 @@
 #include "monty.h"
 
-int usage_error(void);
-int unknown_op_error(char *opcode, unsigned int line_number);
-int malloc_error(void);
-int open_file_error(char *filename);
-int no_int_error(unsigned int line_number);
+
 
 /**
  * usage_error - prints usage errors
  *
  * Return: (EXIT_FAILURE)
  */
-int usage_error(void)
+int usage_error(unsigned int line_number)
 {
 	fprintf(stderr, "USAGE: monty file\n");
-	return (EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
 /**
  * unknown_op_error - prints unknown instruction errors
@@ -25,9 +21,8 @@ int usage_error(void)
  */
 int unknown_op_error(char *opcode, unsigned int line_number)
 {
-	fprintf(stderr, "L%u: unknown instruction %s\n",
-		line_number, opcode);
-	return (EXIT_FAILURE);
+	fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+	exit(EXIT_FAILURE);
 }
 
 /**
@@ -35,10 +30,10 @@ int unknown_op_error(char *opcode, unsigned int line_number)
  *
  * Return: (EXIT_FAILURE)
  */
-int malloc_error(void)
+int malloc_error(unsigned int line_number)
 {
 	fprintf(stderr, "Error: malloc failed\n");
-	return (EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
 
 /**
@@ -49,8 +44,8 @@ int malloc_error(void)
  */
 int open_file_error(char *filename)
 {
-	fprintf(stderr, "Error: Can't open file %s\n", filename);
-	return (EXIT_FAILURE);
+	fprintf(stderr, "Error: Can't open file %s, %s\n", filename, strerror(errno));
+	exit(EXIT_FAILURE);
 }
 
 /**
@@ -62,5 +57,5 @@ int open_file_error(char *filename)
 int no_int_error(unsigned int line_number)
 {
 	fprintf(stderr, "L%u: usage: push integer\n", line_number);
-	return (EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
