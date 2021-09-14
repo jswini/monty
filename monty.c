@@ -1,4 +1,5 @@
 #include "monty.h"
+int number;
 /**
  *
  *
@@ -6,13 +7,15 @@
  */
 int main(int argc, char **argv)
 {
-	int fd;
-	unsigned int line;
-	unsigned int j;
-	char **array;
-	stack_t stack;
+	unsigned int line = 0;
+	unsigned int j = 0;
+	char **arraymain;
+	size_t size;
+	FILE *whatever;
+	char *buffer = NULL;
+	stack_t *stack = NULL;
 
-	int (*op_result)(stack_t **stack, unsigned int linenum);
+	/*void (*op_result)(stack_t **stack, unsigned int linenum);*/
 
 
 	if ((argv[1] == NULL) || (argc != 2))
@@ -21,22 +24,24 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		fd = open(argv[1], O_RDONLY);
-		if (fd == -1)
+		whatever = fopen(argv[1], "r");
+		if (whatever == NULL)
+		{
 			open_file_error(argv[1]);
-		array = tokenize(fd);
+		}
+		while (getline(&buffer, &size, whatever) != -1)
+		{
+			arraymain = tokenize(buffer);
+			line++;
+			printf("line: %i\n", line);
+			if (arraymain[j+1] != NULL)
+				number = atoi(arraymain[j + 1]);
+/*			printf("number = %i\n", number);*/
+			get_op_code(arraymain[j])(&stack, line);
+		}
 	}
-	close(fd);
-
-	for (j = 0; array[j] != NULL; j += 2)
-	{
-		if (j % 2 == 0)
-			line = ((j / 2) + 1);
-		number = atoi(array[j + 1]);
-		op_result = get_op_code(array[j]);
-		printf("%i", op_result(stack, line));
-	}
-
+	fclose(whatever);
+	free(buffer);
 	return (0);
 }
 
@@ -45,37 +50,30 @@ int main(int argc, char **argv)
  *
  *
  */
-char **tokenize(int fd)
+char **tokenize(char *buffer)
 {
-	char **array;
+	char **tokarray;
+	char *token;
 	int i;
-	char *buffer;
-	size_t count;
+	char delim[] = {' ', '\n'};
 
-	buffer = malloc(sizeof(char) * 1024);
-	if (buffer == NULL)
-		malloc_error();
-	count = read(fd, buffer, 32);
+
+	tokarray = malloc(sizeof(char) * 1024);
 /*for debug only*/
-	write(STDOUT_FILENO, buffer, count);
+	write(STDOUT_FILENO, buffer, strlen(buffer));
 /*end debug*/
 
-/*tokenize the array*/
-	array[0] = strtok(buffer, " \n");
-
-	for (i = 1; array[i] != NULL; i++)
+	token = strtok(buffer, delim);
+/*	printf("0: %s\n", token);*/
+	tokarray[0] = token;
+	for (i = 1; token != NULL; i++)
 	{
-		array[i] = strtok(NULL, "  \n");
-	}
-/*prints array for debug*/
-	for (i = 0; array[i] != NULL; i++)
-	{
-		printf("%s\n", array[i]);
+		token = strtok(NULL, delim);
+		tokarray[i] = token;
+/*		printf("j+1 = %d: %s\n", i, token);*/
 	}
 
-	free(buffer);
-
-	return (array);
+	return (tokarray);
 }
 
 /**
@@ -83,7 +81,7 @@ char **tokenize(int fd)
  *
  *
  */
-int (*get_op_code(char *s))(stack_t **stack, unsigned int linenum)
+void (*get_op_code(char *s))(stack_t **stack, unsigned int lineinfo)
 {
 	instruction_t op_code[] = {
 		{"push", push},
@@ -96,14 +94,13 @@ int (*get_op_code(char *s))(stack_t **stack, unsigned int linenum)
 		{NULL, NULL}
 	};
 	int i = 0;
-
+	printf("opcode: %s\n", s);
 	while (i < 7)
 	{
-		if ((op_code[i].opcode[0] == *s)  && (s != NULL))
+		if ((strcmp(op_code[i].opcode, s) == 0)  && (s != NULL))
 			return (op_code[i].f);
-		else
-			unknown_op_error(s, linenum);
 		i++;
 	}
+	unknown_op_error(s);
 	return (NULL);
 }
