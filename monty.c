@@ -7,12 +7,12 @@
 int main(int argc, char **argv)
 {
 	int fd;
-	int line;
+	unsigned int line;
 	unsigned int j;
 	char **array;
-	stack_t *stack;
+	stack_t stack;
 
-	int (*op_result)(stack_t, unsigned int);
+	int (*op_result)(stack_t **stack, unsigned int linenum);
 
 
 	if ((argv[1] == NULL) || (argc != 2))
@@ -32,9 +32,9 @@ int main(int argc, char **argv)
 	{
 		if (j % 2 == 0)
 			line = ((j / 2) + 1);
-		data_n = atoi(array[j + 1]);
+		number = atoi(array[j + 1]);
 		op_result = get_op_code(array[j]);
-		printf("%s", op_result(stack, line));
+		printf("%i", op_result(stack, line));
 	}
 
 	return (0);
@@ -50,13 +50,14 @@ char **tokenize(int fd)
 	char **array;
 	int i;
 	char *buffer;
+	size_t count;
 
-	buffer == malloc(sizeof(char) * 32);
+	buffer = malloc(sizeof(char) * 1024);
 	if (buffer == NULL)
 		malloc_error();
 	count = read(fd, buffer, 32);
 /*for debug only*/
-	write(STDOUT_FILENO, buffer, 32);
+	write(STDOUT_FILENO, buffer, count);
 /*end debug*/
 
 /*tokenize the array*/
@@ -82,7 +83,7 @@ char **tokenize(int fd)
  *
  *
  */
-int (*get_op_code(char *s))(stack_t stack, unsigned int line)
+int (*get_op_code(char *s))(stack_t **stack, unsigned int linenum)
 {
 	instruction_t op_code[] = {
 		{"push", push},
@@ -98,10 +99,10 @@ int (*get_op_code(char *s))(stack_t stack, unsigned int line)
 
 	while (i < 7)
 	{
-		if ((op_code[i].opcode[0] == *s)  && (s[1] != '\0'))
+		if ((op_code[i].opcode[0] == *s)  && (s != NULL))
 			return (op_code[i].f);
 		else
-			unknown_op_error(op_code, line_number);
+			unknown_op_error(s, linenum);
 		i++;
 	}
 	return (NULL);
