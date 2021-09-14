@@ -19,9 +19,9 @@ int usage_error(void)
  *
  * Return: (EXIT_FAILURE)
  */
-int unknown_op_error(char *opcode, unsigned int line_number)
+int unknown_op_error(char *s, unsigned int line_number)
 {
-	fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+	fprintf(stderr, "L%u: unknown instruction %s\n", line_number, s);
 	exit(EXIT_FAILURE);
 }
 
