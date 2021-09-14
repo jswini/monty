@@ -57,8 +57,12 @@ int unknown_op_error(char *opcode, unsigned int line_number);
 int malloc_error(void);
 int open_file_error(char *filename);
 int no_int_error(unsigned int line_number);
+void pint_error(unsigned int line_number);
+void pop_error(unsigned int line);
+void swap_error(unsigned int line);
+void add_error(unsigned int line);
 char **tokenize(int fd);
 
 /*EXTERNAL VARIABLES*/
-extern int data_n;
+extern int number;
 #endif /* MONTY_H*/
