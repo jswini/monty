@@ -53,11 +53,11 @@ void push(stack_t **stack, unsigned int line_number)
 
 void pall(stack_t **stack, unsigned int line_number)
      {
-		size_t len;
+/*		size_t len;*/
 		stack_t *tmp = (*stack);
 
-		len = list_len(*stack);
-		printf("number of nodes: %ld\n", len);
+/*		len = list_len(*stack);
+		printf("number of nodes: %ld\n", len);*/
 		while (tmp)
 			{
 				printf("%d\n", tmp->n);

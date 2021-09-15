@@ -33,10 +33,10 @@ int main(int argc, char **argv)
 		{
 			arraymain = tokenize(buffer);
 			line++;
-			printf("line: %i\n", line);
+/*			printf("line: %i\n", line);*/
 			if (arraymain[j+1] != NULL)
 				number = atoi(arraymain[j + 1]);
-			printf("number = %i\n", number);
+/*			printf("number = %i\n", number);*/
 			get_op_code(arraymain[j])(&stack, line);
 		}
 	}
@@ -59,9 +59,9 @@ char **tokenize(char *buffer)
 
 
 	tokarray = malloc(sizeof(char) * 1024);
-/*for debug only*/
+/*for debug only
 	write(STDOUT_FILENO, buffer, strlen(buffer));
-/*end debug*/
+end debug*/
 
 	token = strtok(buffer, delim);
 /*	printf("0: %s\n", token);*/
@@ -94,7 +94,7 @@ void (*get_op_code(char *s))(stack_t **stack, unsigned int lineinfo)
 		{NULL, NULL}
 	};
 	int i = 0;
-	printf("opcode: %s\n", s);
+/*	printf("opcode: %s\n", s);*/
 	while (i < 7)
 	{
 		if ((strcmp(op_code[i].opcode, s) == 0)  && (s != NULL))
