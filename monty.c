@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 			printf("line: %i\n", line);
 			if (arraymain[j+1] != NULL)
 				number = atoi(arraymain[j + 1]);
-/*			printf("number = %i\n", number);*/
+			printf("number = %i\n", number);
 			get_op_code(arraymain[j])(&stack, line);
 		}
 	}

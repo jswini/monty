@@ -1,6 +1,15 @@
 #include "monty.h"
-void push(stack_t **stack, unsigned int line_number);
-void pall(stack_t **stack, unsigned int line_number);
+size_t list_len(const stack_t *stack)
+{
+	int count;
+	if (stack == NULL)
+		return (0);
+	for (count = 0; stack != NULL; count++)
+		{
+			stack = stack->next;
+		}
+	return (count);
+}
 
 
 /**
@@ -44,11 +53,15 @@ void push(stack_t **stack, unsigned int line_number)
 
 void pall(stack_t **stack, unsigned int line_number)
      {
-stack_t *tmp = (*stack)->next;
-while (tmp)
-	  {
-	  printf("%d\n", tmp->n);
-	  tmp = tmp->next;
-	  }
-	(void)line_number;
+		size_t len;
+		stack_t *tmp = (*stack);
+
+		len = list_len(*stack);
+		printf("number of nodes: %ld\n", len);
+		while (tmp)
+			{
+				printf("%d\n", tmp->n);
+				tmp = tmp->next;
+			}
+			(void)line_number;
      }
