@@ -18,9 +18,6 @@ int main(int argc, char **argv)
 	stack_t *stack = NULL;
 	int n;
 
-	/*void (*op_result)(stack_t **stack, unsigned int linenum);*/
-
-
 	if ((argv[1] == NULL) || (argc != 2))
 	{
 		usage_error();
@@ -36,18 +33,19 @@ int main(int argc, char **argv)
 		{
 			arraymain = tokenize(buffer);
 			line++;
-			for (n = 0; arraymain[j + 1][0] != '\0'; n++)
+			for (n = 0; (arraymain[j + 1]) && (arraymain[j + 1][n] != '\0'); n++)
 			{
-				if (!isdigit(arraymain[j + 1]))
+				if (arraymain[j + 1][n] == '-')
+					n++;
+				if ((arraymain[j + 1][n] < 48) || (arraymain[j + 1][n] > 57))
 					no_int_error(line);
 				number = atoi(arraymain[j + 1]);
 			}
-/*			printf("number = %i\n", number);*/
 			get_op_code(arraymain[j])(&stack, line);
+			free(arraymain);
 		}
 	}
-	fclose(whatever);
-	free(buffer);
+	free_stuff(whatever, buffer, stack);
 	return (0);
 }
 
@@ -64,7 +62,6 @@ char **tokenize(char *buffer)
 	char *token;
 	int i;
 	char delim[] = {' ', '\n'};
-
 
 	tokarray = malloc(sizeof(char) * 1024);
 /*
@@ -114,4 +111,27 @@ void (*get_op_code(char *s))(stack_t **stack, unsigned int lineinfo)
 	}
 	unknown_op_error(s);
 	return (NULL);
+}
+
+/**
+ * free - frees all the things
+ * @whatever: file to be freed
+ * @buffer: buffer to be freed
+ * @stack: linked list
+ * @next: temp node to help free
+ *
+ * Return: void
+ */
+void free_stuff(FILE *whatever, char *buffer, stack_t *stack)
+{
+	stack_t *next;
+
+	fclose(whatever);
+	free(buffer);
+	while (stack != NULL)
+	{
+		next = stack->next;
+		free(stack);
+		stack = next;
+	}
 }

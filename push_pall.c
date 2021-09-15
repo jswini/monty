@@ -15,8 +15,9 @@ void push(stack_t **stack, unsigned int line_number)
 	if (new_node == NULL)
 		malloc_error();
 
-
+/*	printf("number is: %d\n", number);*/
 	new_node->n = number;
+/*	printf("number is: %d\n", new_node->n);*/
 	new_node->prev = NULL;
 	if (*stack == NULL)  /* validate if empty stack */
 	{
