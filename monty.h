@@ -1,5 +1,6 @@
 #ifndef MONTY_H
 #define MONTY_H
+#define _POSIX_C_SOURCE 200809L
 /*
 * structs required for the project
 */
@@ -42,6 +43,7 @@ typedef struct instruction_s
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
+#include <ctype.h>
 
 /*our functions*/
 void push(stack_t **stack, unsigned int line_number);
@@ -62,6 +64,7 @@ void pop_error(unsigned int line);
 void swap_error(unsigned int line);
 void add_error(unsigned int line);
 char **tokenize(char *buffer);
+void free_stuff(FILE *whatever, char *buffer, stack_t *stack);
 
 /*EXTERNAL VARIABLES*/
 extern int number;
