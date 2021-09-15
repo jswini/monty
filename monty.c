@@ -1,9 +1,11 @@
 #include "monty.h"
 int number;
 /**
+ * main - driver for monty interpreter
+ * @argc: number of args
+ * @argv: array of agrs
  *
- *
- * Return:
+ * Return: 0
  */
 int main(int argc, char **argv)
 {
@@ -34,7 +36,7 @@ int main(int argc, char **argv)
 			arraymain = tokenize(buffer);
 			line++;
 /*			printf("line: %i\n", line);*/
-			if (arraymain[j+1] != NULL)
+			if (arraymain[j + 1] != NULL)
 				number = atoi(arraymain[j + 1]);
 /*			printf("number = %i\n", number);*/
 			get_op_code(arraymain[j])(&stack, line);
@@ -46,9 +48,10 @@ int main(int argc, char **argv)
 }
 
 /**
+ * tokenize - what it says on the label
+ * @buffer: buffer from fread
  *
- *
- *
+ * Return: tokenized array
  */
 char **tokenize(char *buffer)
 {
@@ -59,9 +62,11 @@ char **tokenize(char *buffer)
 
 
 	tokarray = malloc(sizeof(char) * 1024);
-/*for debug only
-	write(STDOUT_FILENO, buffer, strlen(buffer));
-end debug*/
+/*
+*for debug only
+*	write(STDOUT_FILENO, buffer, strlen(buffer));
+*end debug
+*/
 
 	token = strtok(buffer, delim);
 /*	printf("0: %s\n", token);*/
@@ -77,9 +82,10 @@ end debug*/
 }
 
 /**
+ * get_op_code - gets the op code
+ * @s: op_code passed
  *
- *
- *
+ * Return: op code function
  */
 void (*get_op_code(char *s))(stack_t **stack, unsigned int lineinfo)
 {

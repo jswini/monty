@@ -1,7 +1,7 @@
 #include"monty.h"
 /**
  * pint_error - print error message if the stack is empty
- * @line_numer: line number where error occurred
+ * @line_number: line number where error occurred
  * Return: void
  */
 void pint_error(unsigned int line_number)
