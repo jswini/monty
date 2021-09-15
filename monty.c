@@ -16,6 +16,7 @@ int main(int argc, char **argv)
 	FILE *whatever;
 	char *buffer = NULL;
 	stack_t *stack = NULL;
+	int n;
 
 	/*void (*op_result)(stack_t **stack, unsigned int linenum);*/
 
@@ -35,9 +36,12 @@ int main(int argc, char **argv)
 		{
 			arraymain = tokenize(buffer);
 			line++;
-/*			printf("line: %i\n", line);*/
-			if (arraymain[j + 1] != NULL)
+			for (n = 0; arraymain[j + 1][0] != '\0'; n++)
+			{
+				if (!isdigit(arraymain[j + 1]))
+					no_int_error(line);
 				number = atoi(arraymain[j + 1]);
+			}
 /*			printf("number = %i\n", number);*/
 			get_op_code(arraymain[j])(&stack, line);
 		}
@@ -46,6 +50,7 @@ int main(int argc, char **argv)
 	free(buffer);
 	return (0);
 }
+
 
 /**
  * tokenize - what it says on the label
