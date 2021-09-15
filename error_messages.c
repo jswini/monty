@@ -14,8 +14,7 @@ int usage_error(void)
 }
 /**
  * unknown_op_error - prints unknown instruction errors
- * @opcode: opcode error
- * @line_number: line number where error occured
+ * @s: invalid op code passed to caller function
  *
  * Return: (EXIT_FAILURE)
  */

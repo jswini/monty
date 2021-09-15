@@ -1,7 +1,7 @@
 #ifndef MONTY_H
 #define MONTY_H
 /*
-structs required for the project
+* structs required for the project
 */
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -51,9 +51,9 @@ void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
-int (*get_op_code(char *s))(stack_t **, unsigned int);
+void (*get_op_code(char *s))(stack_t **, unsigned int);
 int usage_error(void);
-int unknown_op_error(char *s, unsigned int line_number);
+int unknown_op_error(char *s);
 int malloc_error(void);
 int open_file_error(char *filename);
 int no_int_error(unsigned int line_number);
@@ -61,7 +61,7 @@ void pint_error(unsigned int line_number);
 void pop_error(unsigned int line);
 void swap_error(unsigned int line);
 void add_error(unsigned int line);
-char **tokenize(int fd);
+char **tokenize(char *buffer);
 
 /*EXTERNAL VARIABLES*/
 extern int number;
